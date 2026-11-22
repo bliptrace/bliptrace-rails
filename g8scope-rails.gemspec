@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
                        "Railtie and Rack middleware that capture unhandled exceptions with " \
                        "request-context enrichment and ship them to the g8scope ingest API. " \
                        "Never raises into the host application."
-  spec.homepage      = "https://github.com/developers-hub-my/g8scope-rails"
+  spec.homepage      = "https://github.com/bliptrace/bliptrace-rails"
   spec.license       = "MIT"
 
   spec.required_ruby_version = ">= 2.6"

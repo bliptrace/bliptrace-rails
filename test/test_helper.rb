@@ -3,7 +3,7 @@
 # minitest ships with Ruby but is not always on the default load path (e.g. the
 # macOS system Ruby installs it under /Library/Ruby/Gems). Discover it so the
 # suite runs standalone with:
-#   ruby -I../g8scope-ruby/lib -Ilib -Itest test/middleware_test.rb
+#   ruby -I../bliptrace-ruby/lib -Ilib -Itest test/middleware_test.rb
 begin
   require "minitest/autorun"
 rescue LoadError

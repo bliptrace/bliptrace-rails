@@ -1,6 +1,6 @@
-# g8scope-rails
+# bliptrace-rails
 
-The **Ruby on Rails** adapter for [g8scope](https://github.com/developers-hub-my/g8scope-ruby) — a central, multi-tenant, runtime-agnostic error-capture and observability platform.
+The **Ruby on Rails** adapter for [g8scope](https://github.com/bliptrace/bliptrace-ruby) — a central, multi-tenant, runtime-agnostic error-capture and observability platform.
 
 This is a **thin** adapter over the runtime `g8scope` Ruby gem. It adds:
 
@@ -14,7 +14,7 @@ It will **never break your application**: every step of the capture path is guar
 Add it to your `Gemfile`:
 
 ```ruby
-gem "g8scope-rails"
+gem "bliptrace-rails"
 ```
 
 Then:
@@ -73,7 +73,7 @@ use G8Scope::Rails::Middleware, key: ENV["G8SCOPE_KEY"]
 The adapter is framework-light by design: its middleware, context builder, and config glue depend only on the `g8scope` gem plus the standard library. Run the test suite against the sibling runtime gem without bundler or an installed Rails:
 
 ```bash
-ruby -I../g8scope-ruby/lib -Ilib -Itest test/middleware_test.rb
+ruby -I../bliptrace-ruby/lib -Ilib -Itest test/middleware_test.rb
 ```
 
 or simply:
