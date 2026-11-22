@@ -31,7 +31,7 @@ Configure via your Rails application config:
 
 ```ruby
 # config/application.rb (or an environment file)
-config.g8scope = {
+config.bliptrace = {
   key: "your-ingest-key",
   # endpoint:    "https://ingest.scope.g8suite.com", # optional override
   # environment: "production",                        # defaults to Rails.env
@@ -43,12 +43,16 @@ config.g8scope = {
 
 | Variable               | Purpose                                  |
 | ---------------------- | ---------------------------------------- |
-| `G8SCOPE_KEY`          | Ingest key (required to enable capture)  |
-| `G8SCOPE_ENDPOINT`     | Ingest endpoint override                 |
-| `G8SCOPE_ENVIRONMENT`  | Environment label (defaults to `Rails.env`) |
-| `G8SCOPE_RELEASE`      | Release / version identifier             |
+| `BLIPTRACE_KEY`        | Ingest key (required to enable capture)  |
+| `BLIPTRACE_ENDPOINT`   | Ingest endpoint override                 |
+| `BLIPTRACE_ENVIRONMENT` | Environment label (defaults to `Rails.env`) |
+| `BLIPTRACE_RELEASE`    | Release / version identifier             |
 
-Explicit `config.g8scope` values take precedence over environment variables.
+Explicit `config.bliptrace` values take precedence over environment variables.
+
+> **Deprecated:** the old `G8SCOPE_*` variables and `config.g8scope` are still
+> read as a fallback when the `BLIPTRACE` name is unset. They will be removed in
+> the next major version.
 
 With **no key configured the adapter captures nothing** — it stays completely dormant.
 
@@ -65,7 +69,7 @@ If you prefer to wire the middleware yourself (e.g. in a non-Rails Rack app), yo
 ```ruby
 require "g8scope/rails/middleware"
 
-use G8Scope::Rails::Middleware, key: ENV["G8SCOPE_KEY"]
+use G8Scope::Rails::Middleware, key: ENV["BLIPTRACE_KEY"]
 ```
 
 ## Development

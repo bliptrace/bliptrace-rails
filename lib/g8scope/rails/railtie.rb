@@ -9,10 +9,11 @@ if defined?(Rails::Railtie)
   module G8Scope
     module Rails
       # Wires the g8scope capture middleware into the host Rails app's stack and
-      # sources its configuration from `Rails.application.config.g8scope` and/or
-      # ENV. Configuration precedence: explicit config wins over ENV.
+      # sources its configuration from `Rails.application.config.bliptrace`
+      # (deprecated: `config.g8scope`) and/or ENV. Configuration precedence: explicit config wins over ENV.
       class Railtie < ::Rails::Railtie
         config.g8scope = {} unless config.respond_to?(:g8scope) && config.g8scope
+        config.bliptrace = {} unless config.respond_to?(:bliptrace) && config.bliptrace
 
         initializer "g8scope.middleware" do |app|
           options = G8Scope::Rails::Railtie.resolve_config(app)
@@ -23,15 +24,18 @@ if defined?(Rails::Railtie)
         # it is resolved server-side from the ingest key.
         def self.resolve_config(app)
           env_config = {
-            key: ENV["G8SCOPE_KEY"],
-            endpoint: ENV["G8SCOPE_ENDPOINT"],
-            environment: ENV["G8SCOPE_ENVIRONMENT"] || (defined?(::Rails) ? ::Rails.env.to_s : nil),
-            release: ENV["G8SCOPE_RELEASE"]
+            key: G8Scope::Rails.env("KEY"),
+            endpoint: G8Scope::Rails.env("ENDPOINT"),
+            environment: G8Scope::Rails.env("ENVIRONMENT") || (defined?(::Rails) ? ::Rails.env.to_s : nil),
+            release: G8Scope::Rails.env("RELEASE")
           }.reject { |_, v| v.nil? }
 
-          app_config = app.config.respond_to?(:g8scope) ? (app.config.g8scope || {}) : {}
+          # `config.bliptrace` wins over the deprecated `config.g8scope`.
           symbolised = {}
-          app_config.each { |k, v| symbolised[k.to_sym] = v }
+          %i[g8scope bliptrace].each do |name|
+            app_config = app.config.respond_to?(name) ? (app.config.public_send(name) || {}) : {}
+            app_config.each { |k, v| symbolised[k.to_sym] = v }
+          end
 
           env_config.merge(symbolised)
         end

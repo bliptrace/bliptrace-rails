@@ -13,6 +13,11 @@ require "g8scope/rails/middleware"
 # It must NEVER break the host application.
 module G8Scope
   module Rails
+    # Reads BLIPTRACE_<name> from ENV, falling back to the deprecated
+    # G8SCOPE_<name> (removed in the next major) when unset.
+    def self.env(name)
+      ENV["BLIPTRACE_#{name}"] || ENV["G8SCOPE_#{name}"]
+    end
   end
 end
 
