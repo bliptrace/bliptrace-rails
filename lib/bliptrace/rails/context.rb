@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module G8Scope
+module Bliptrace
   module Rails
     # Builds envelope context from a Rack `env` hash. Pure and duck-typed so it
     # is unit-testable without Rack or Rails loaded. Sensitive request headers

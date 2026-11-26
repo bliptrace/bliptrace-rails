@@ -4,14 +4,14 @@ require "test_helper"
 
 class MiddlewareTest < Minitest::Test
   def client_with(transport, config = {})
-    G8Scope::Client.new(
-      G8Scope::Config.new(**{ key: "k", endpoint: "http://api" }.merge(config)),
+    Bliptrace::Client.new(
+      Bliptrace::Config.new(**{ key: "k", endpoint: "http://api" }.merge(config)),
       transport
     )
   end
 
   def middleware(app, transport, config = {})
-    G8Scope::Rails::Middleware.new(app, client: client_with(transport, config))
+    Bliptrace::Rails::Middleware.new(app, client: client_with(transport, config))
   end
 
   def test_captures_ships_valid_envelope_and_reraises
@@ -27,7 +27,7 @@ class MiddlewareTest < Minitest::Test
 
     assert_equal "ruby", env["runtime"]["name"]
     assert env["sdk"], "sdk section present"
-    assert_equal "g8scope-ruby", env["sdk"]["name"]
+    assert_equal "bliptrace-ruby", env["sdk"]["name"]
     assert_equal "RuntimeError", env["exception"]["type"]
     assert_equal "kaboom", env["exception"]["message"]
   end
@@ -54,7 +54,7 @@ class MiddlewareTest < Minitest::Test
   def test_passes_through_when_no_exception
     transport = FakeTransport.new
     app = ->(_env) { [200, {}, ["ok"]] }
-    mw = G8Scope::Rails::Middleware.new(app, client: client_with(transport))
+    mw = Bliptrace::Rails::Middleware.new(app, client: client_with(transport))
 
     status, _headers, body = mw.call(build_rack_env)
     assert_equal 200, status
@@ -84,7 +84,7 @@ class MiddlewareTest < Minitest::Test
     end
 
     app = RaisingApp.new(ArgumentError.new("original"))
-    mw = G8Scope::Rails::Middleware.new(app, client: exploding)
+    mw = Bliptrace::Rails::Middleware.new(app, client: exploding)
 
     error = assert_raises(ArgumentError) { mw.call(build_rack_env) }
     assert_equal "original", error.message
@@ -94,7 +94,7 @@ class MiddlewareTest < Minitest::Test
     # No injected client: the middleware must build one from config and not blow
     # up on construction. With no key it ships nothing but still re-raises.
     app = RaisingApp.new(RuntimeError.new("boom"))
-    mw = G8Scope::Rails::Middleware.new(app)
+    mw = Bliptrace::Rails::Middleware.new(app)
     assert_raises(RuntimeError) { mw.call(build_rack_env) }
   end
 end

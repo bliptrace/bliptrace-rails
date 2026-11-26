@@ -15,12 +15,12 @@ rescue LoadError
 end
 
 # Framework-light: load only the runtime gem + the adapter's testable pieces.
-# We do NOT require "g8scope/rails" because that pulls in the Railtie (guarded,
+# We do NOT require "bliptrace/rails" because that pulls in the Railtie (guarded,
 # but unnecessary here) — we load exactly what we test.
-require "g8scope"
-require "g8scope/rails/version"
-require "g8scope/rails/context"
-require "g8scope/rails/middleware"
+require "bliptrace"
+require "bliptrace/rails/version"
+require "bliptrace/rails/context"
+require "bliptrace/rails/middleware"
 
 # A fake transport that records every envelope instead of making a network call.
 class FakeTransport

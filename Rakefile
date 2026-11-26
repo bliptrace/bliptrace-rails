@@ -3,7 +3,7 @@
 require "rake/testtask"
 
 Rake::TestTask.new(:test) do |t|
-  # The runtime g8scope gem lives in a sibling repo during development; place it
+  # The runtime bliptrace gem lives in a sibling repo during development; place it
   # on the load path so the suite runs without bundler or an installed gem.
   t.libs << "../bliptrace-ruby/lib"
   t.libs << "lib"
