@@ -33,7 +33,7 @@ Configure via your Rails application config:
 # config/application.rb (or an environment file)
 config.bliptrace = {
   key: "your-ingest-key",
-  # endpoint:    "https://ingest.scope.g8suite.com", # optional override
+  # endpoint:    "https://ingest.bliptrace.com", # optional override
   # environment: "production",                        # defaults to Rails.env
   # release:     "1.4.2"
 }
